@@ -1,0 +1,36 @@
+{
+    "name": "turbo-easemob-node",
+    "version": "1.0.0",
+    "description": "环信IM/Push nodejs server",
+    "main": "./dist/index.js",
+    "scripts": {
+        "dev": "nodemon --config nodemon.json ./index.ts",
+        "dev:debug": "nodemon --config nodemon.json --inspect-brk ./index.ts",
+        "build": "tsc",
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ziguilp/turbo-easemob-node.git"
+    },
+    "keywords": [
+        "环信",
+        "easemob"
+    ],
+    "author": "turbo",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/ziguilp/turbo-easemob-node/issues"
+    },
+    "homepage": "https://github.com/ziguilp/turbo-easemob-node#readme",
+    "devDependencies": {
+        "@types/node": "^18.11.16",
+        "@types/qs": "^6.9.7",
+        "ts-node": "^10.9.1",
+        "typescript": "^4.9.4"
+    },
+    "dependencies": {
+        "axios": "^1.2.1",
+        "qs": "^6.11.0"
+    }
+}
