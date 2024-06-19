@@ -2,7 +2,7 @@
  * @Author        : turbo 664120459@qq.com
  * @Date          : 2022-12-18 19:29:30
  * @LastEditors   : turbo 664120459@qq.com
- * @LastEditTime  : 2024-06-19 11:19:24
+ * @LastEditTime  : 2024-06-19 11:22:03
  * @FilePath      : /turbo-easemob-node/README.md
  * @Description   : 
  * 
@@ -86,6 +86,10 @@ try {
 
     // Im，只支持文本、透传、自定义消息类型
     const im = new ease.ImMessage(easemob);
+    // 设置接收人
+    im.setReceiver("user1");
+    // 增加接收人
+    im.addReceiver("user2", "user3");
     // 发送文本消息
     im.sendTxtMessage("这是文本消息");
     // 发送透传消息
