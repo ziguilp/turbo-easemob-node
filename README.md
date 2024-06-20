@@ -2,7 +2,7 @@
  * @Author        : turbo 664120459@qq.com
  * @Date          : 2022-12-18 19:29:30
  * @LastEditors   : turbo 664120459@qq.com
- * @LastEditTime  : 2024-06-19 11:22:03
+ * @LastEditTime  : 2024-06-20 09:41:25
  * @FilePath      : /turbo-easemob-node/README.md
  * @Description   : 
  * 
@@ -22,23 +22,16 @@ yarn add turbo-easemob-node
 ``` Typescript
 import ease from 'turbo-easemob-node'
 
-/**
- * 创建easemob实例
- */
+// 缓存实例,需拥有get,set方法
+const cache = new Redis();
+// 创建easemob实例
 const easemob = new ease.easemob({
     appKey: '**********#demo',
     clientId: '********',
     clientSecret: '********',
     appName: 'demo',
     orgName: '******'
-}, {
-    set() {
-        console.log(`set:`, arguments)
-    },
-    get() {
-        return null
-    }
-});
+}, cache);
 
 try {
     // 用户体系

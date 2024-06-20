@@ -1,3 +1,12 @@
+import Redis from "ioredis";
+import NodeCache from "node-cache";
+export interface CacheEasemobToken {
+    accessToken: string;
+    /**
+     * 时间戳秒
+     */
+    expires: number;
+}
 export interface EasemobConf {
     orgName: string;
     appName: string;
@@ -9,10 +18,10 @@ export declare class EasemobBase {
     private host;
     private conf;
     private cache;
-    constructor(conf: EasemobConf, cachehandle: any);
+    constructor(conf: EasemobConf, cachehandle?: NodeCache | Redis);
     private token;
     private getUri;
-    getAuthToken(): Promise<any>;
+    getAuthToken(): Promise<string>;
     /**
      *
      * @param uri

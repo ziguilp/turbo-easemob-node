@@ -3,7 +3,7 @@
  * @Author        : turbo 664120459@qq.com
  * @Date          : 2024-06-17 17:43:00
  * @LastEditors   : turbo 664120459@qq.com
- * @LastEditTime  : 2024-06-19 10:01:02
+ * @LastEditTime  : 2024-06-20 11:18:42
  * @FilePath      : /turbo-easemob-node/src/lib/easemob.base.ts
  * @Description   :
  *
@@ -51,13 +51,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.EasemobBase = void 0;
 var axios_1 = __importDefault(require("axios"));
-var cache_1 = require("./cache");
+var ioredis_1 = __importDefault(require("ioredis"));
+var node_cache_1 = __importDefault(require("node-cache"));
 var EasemobBase = /** @class */ (function () {
     function EasemobBase(conf, cachehandle) {
         this.host = 'https://a1.easemob.com';
         this.token = undefined;
         this.conf = conf;
-        this.cache = new cache_1.EaseCache(cachehandle);
+        if (!cachehandle) {
+            cachehandle = new node_cache_1.default();
+        }
+        this.cache = cachehandle;
     }
     EasemobBase.prototype.getUri = function (uri) {
         if (!uri.startsWith("/")) {
@@ -67,7 +71,7 @@ var EasemobBase = /** @class */ (function () {
     };
     EasemobBase.prototype.getAuthToken = function () {
         return __awaiter(this, void 0, void 0, function () {
-            var key, cache, res;
+            var key, cache, cacheToken, res;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
@@ -79,8 +83,9 @@ var EasemobBase = /** @class */ (function () {
                     case 1:
                         cache = _a.sent();
                         if (cache) {
-                            this.token = cache;
-                            return [2 /*return*/, cache.accessToken];
+                            cacheToken = 'string' == typeof cache ? JSON.parse(cache) : cache;
+                            this.token = cacheToken;
+                            return [2 /*return*/, cacheToken.accessToken];
                         }
                         return [4 /*yield*/, this.request(this.getUri('/token'), {
                                 grant_type: "client_credentials",
@@ -96,7 +101,12 @@ var EasemobBase = /** @class */ (function () {
                                 accessToken: res.access_token,
                                 expires: Math.round((new Date()).getTime() / 1000 + 86100)
                             };
-                            this.cache.set(key, this.token, 86100);
+                            if (this.cache instanceof ioredis_1.default) {
+                                this.cache.set(key, JSON.stringify(this.token), 'EX', 86100);
+                            }
+                            else {
+                                this.cache.set(key, this.token, 86100);
+                            }
                             return [2 /*return*/, this.token.accessToken];
                         }
                         return [2 /*return*/, ''];
